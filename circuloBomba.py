@@ -59,56 +59,56 @@ class CirculoBomba:
         # Variável onde será armazenado o ponteiro atual
         # Avanço que só vai ser usado na primeira rodada para encontrar o elemento que será o start que é gerado aleatoriamente
         start = self.escolherStartAleatorio()
-        cursor = auxLista.elemento(start)
+        ponteiro = auxLista.elemento(start)
         avanco = self.__pulosIniciais
 			
-				# Se avançou sem dar uma volta completa
+			# Se avançou sem dar uma volta completa
         if (start + avanco) <= len(self.__listaParticipantes):
-            pointer = start + avanco
+            posicaoBomba = start + avanco
             # Se deu a volta até o último elemento e partindo dele
         elif (start + avanco) > len(self.__listaParticipantes) and (start + avanco) % len(self.__listaParticipantes) == 0:
-            pointer = start
+            posicaoBomba = start
             # Se deu a volta em qualquer outro elemento
         else:
-            pointer = (start + avanco) % len(self.__listaParticipantes)
+            posicaoBomba = (start + avanco) % len(self.__listaParticipantes)
         
-        # pointer = (start + avanco) % len(self.__listaParticipantes) if ((start + avanco) % len(self.__listaParticipantes) > 0) else start
+        # posicaoBomba = (start + avanco) % len(self.__listaParticipantes) if ((start + avanco) % len(self.__listaParticipantes) > 0) else start
 			
         # Jogando enquanto num vencedores != participantes
         while not self.verificarFimJogo():     
                 print('='*30)
                 print(f'Participantes: {self.__listaParticipantes}')
                 print(f'Rodada {self.__rodada}')
-                # ! Corrigir print para mostrar o pointer anterior (não o que vai ser eliminado)
-                print(f'Pointer: {cursor} K: {avanco}')
+                # ! Corrigir print para mostrar o posicaoBomba anterior (não o que vai ser eliminado)
+                print(f'Ponteiro: {ponteiro} K: {avanco}')
 
                 # Exclui o eliminado e empilha nos perdedores
-                participante_eliminado = auxLista.remove(pointer)
+                participante_eliminado = auxLista.remove(posicaoBomba)
                 auxPilha.empilha(participante_eliminado)
 
-                if pointer > len(self.__listaParticipantes):
-                    pointer = 1
-                    cursor = auxLista.elemento(pointer)
+                if posicaoBomba > len(self.__listaParticipantes):
+                    posicaoBomba = 1
+                    ponteiro = auxLista.elemento(posicaoBomba)
                 else:
-                    cursor = auxLista.elemento(pointer)
+                    ponteiro = auxLista.elemento(posicaoBomba)
 
                 print('Item removido:', participante_eliminado)
             
                 avanco = self.escolherAvancoAleatorio()
 					
                 # Se avançou sem dar uma volta completa
-                if (pointer + avanco) <= len(self.__listaParticipantes):
-                    pointer = pointer + avanco
+                if (posicaoBomba + avanco) <= len(self.__listaParticipantes):
+                    posicaoBomba = posicaoBomba + avanco
                 # Se deu a volta até o último elemento e partindo dele
-                elif (pointer + avanco) > len(self.__listaParticipantes) and (pointer + avanco) % len(self.__listaParticipantes) == 0:
-                    pointer = pointer
+                elif (posicaoBomba + avanco) > len(self.__listaParticipantes) and (posicaoBomba + avanco) % len(self.__listaParticipantes) == 0:
+                    posicaoBomba = posicaoBomba
                 # Se deu a volta em qualquer outro elemento
                 else:
-                    pointer = (pointer + avanco) % len(self.__listaParticipantes)
+                    posicaoBomba = (posicaoBomba + avanco) % len(self.__listaParticipantes)
 									
-                # pointer = (pointer + avanco) % len(self.__listaParticipantes) if ((pointer + avanco) % len(self.__listaParticipantes) > 0) else pointer
-                if pointer > len(self.__listaParticipantes):
-                    pointer -= len(self.__listaParticipantes)
+                # posicaoBomba = (posicaoBomba + avanco) % len(self.__listaParticipantes) if ((posicaoBomba + avanco) % len(self.__listaParticipantes) > 0) else posicaoBomba
+                if posicaoBomba > len(self.__listaParticipantes):
+                    posicaoBomba -= len(self.__listaParticipantes)
                 self.__rodada += 1
 
         # Caso o jogo tenha encerrado
