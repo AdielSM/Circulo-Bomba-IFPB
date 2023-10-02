@@ -8,7 +8,7 @@ class CirculoBomba:
     def __init__(self,participantes:list,numVencedores:int,pulosIniciais:int):
 
         # Instancia a lista circular de participantes
-        self.__listaParticipantes = ListaCircular(len(participantes))
+        self.__listaParticipantes = ListaCircular()
         for participante in participantes:
             self.__listaParticipantes.append(participante)
 

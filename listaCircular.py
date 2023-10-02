@@ -30,9 +30,10 @@ class No:
 
 
 class ListaCircular:
-    def __init__(self,tamanho:int) -> None:
+    def __init__(self) -> None:
         self.__inicio = None
-        self.__tamanho = tamanho # Não é o tamanho da lista, é o tamanho do jogo, len(participantes
+        self.__final = None
+        self.__tamanho = 0 # Não é o tamanho da lista, é o tamanho do jogo, len(participantes
 
     def __len__(self) -> int:
         return self.__tamanho
@@ -89,6 +90,7 @@ class ListaCircular:
                     aux.proximo = novo_no
 
             novo_no.proximo = aux
+            self.__tamanho += 1
         except AssertionError as ae:
             raise ListaException(ae)
 
@@ -97,16 +99,16 @@ class ListaCircular:
         novo_no = No(carga)
         if not self.__inicio:
             self.__inicio = novo_no
+            self.__final = novo_no
             self.__inicio.proximo = self.__inicio
+
         else:
-            aux = self.__inicio
-            while aux.proximo != self.__inicio:
-                aux = aux.proximo
-            aux.proximo = novo_no
+            self.__final.proximo = novo_no
             novo_no.proximo = self.__inicio
-            
+            self.__final = novo_no
+        self.__tamanho += 1
     # Remove um elemento da lista pela posição
-    def remove(self, posicao: int)  ->  any:
+    def remove(self, posicao: int) -> any:
         try:
             assert self.__inicio, "Lista vazia"
             assert posicao > 0 and posicao <= len(self), "Posição inválida"

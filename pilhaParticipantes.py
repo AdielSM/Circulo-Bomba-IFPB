@@ -91,7 +91,7 @@ class Pilha:
             encontra uma chave passado como argumento. No caso de haver mais de uma
             ocorrência do valor, a primeira ocorrência será retornada.
             O ordenamento que determina a posição é da base para o topo.
-
+            
         Args:
             key (any): um item de dado que deseja procurar na pilha
 
