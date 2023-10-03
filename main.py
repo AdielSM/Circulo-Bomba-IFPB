@@ -19,7 +19,6 @@ def main():
         print('='*30)
 
 
-    
         jogo = CirculoBomba(listaDeParticipantesUsuario,numVencedores,pulosIniciais)
         jogo.jogar()
 

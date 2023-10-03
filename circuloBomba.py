@@ -9,9 +9,7 @@ class CirculoBomba:
 
         # Instancia a lista circular de participantes
         self.__listaParticipantes = ListaCircular()
-        for participante in participantes:
-            self.__listaParticipantes.append(participante)
-
+        self.__adicionarParticipante(participantes)
         self.__numVencedores = self.__verificadorNumeroVencedores(numVencedores)
         self.__pulosIniciais = self.__verificadorPulosIniciais(pulosIniciais)
         self.__rodada = 1
@@ -28,6 +26,16 @@ class CirculoBomba:
     @property
     def pulosIniciais(self):
         return self.__pulosIniciais
+
+    def __adicionarParticipante(self,arrayParticipantes):
+        listaAux = []
+        for participante in arrayParticipantes:
+            if participante in listaAux:
+                raise Exception("Há participantes repetidos na lista!")
+            else:
+                self.__listaParticipantes.append(participante)
+                listaAux.append(participante)
+
     
     def __verificadorNumeroVencedores(self, valor):
         if valor > 0 and valor <= len(self.__listaParticipantes) - 1:
@@ -83,6 +91,7 @@ class CirculoBomba:
             # Exclui o eliminado e empilha nos perdedores
             participante_eliminado = self.__listaParticipantes.remove(posicaoBomba)
             self.__pilhaParticipantesPerdedores.empilha(participante_eliminado)
+            print('Item removido:', participante_eliminado)
 
             if posicaoBomba > len(self.__listaParticipantes):
                 posicaoBomba = 1
@@ -90,13 +99,11 @@ class CirculoBomba:
             else:
                 ponteiro = self.__listaParticipantes.elemento(posicaoBomba)
 
-            print('Item removido:', participante_eliminado)
 
             avanco = self.escolherAvancoAleatorio()
-                
+            auxPonteiro = self.__listaParticipantes.busca(ponteiro)            
             # passa a posição da bomba para o jogador a ser excluído, transformando em índice depois em posição   
-            posicaoBomba = (start - 1 + avanco) % len(self.__listaParticipantes) + 1
-            
+            posicaoBomba = ( auxPonteiro - 1 + avanco) % len(self.__listaParticipantes) + 1
             
             if posicaoBomba > len(self.__listaParticipantes):
                 posicaoBomba -= len(self.__listaParticipantes)
