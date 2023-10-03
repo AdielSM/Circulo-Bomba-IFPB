@@ -23,7 +23,6 @@ class Pilha:
         self.__array = np.full(size, None, dtype=object)
         self.__topo = -1
 
-    # O(1)
     def estaVazia(self) -> bool:
         """ Método que verifica se a pilha está vazia.
 
@@ -38,7 +37,6 @@ class Pilha:
         """
         return self.__topo == -1
 
-    # O(1)
     def __len__(self) -> int:
         """ Método que retorna a quantidade de elementos existentes na pilha
 
@@ -52,7 +50,6 @@ class Pilha:
         """
         return self.__topo + 1
 
-    # O(1)
     def elemento(self, posicao: int) -> any:
         """ Método que recupera a carga armazenada em um determinado elemento da pilha
 
@@ -150,7 +147,6 @@ class Pilha:
         self.__topo += 1
         self.__array[self.__topo] = carga
 
-    # O(1)
     def desempilha(self) -> any:
         """ Método que remove um elemento do topo da pilha e retorna
             sua carga correspondente.
@@ -174,7 +170,6 @@ class Pilha:
         self.__topo -= 1
         return carga
 
-    # O(N)
     def __str__(self) -> str:
         """ Método que retorna a ordenação atual dos elementos da pilha, do
             topo em direção à base
