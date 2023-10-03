@@ -51,83 +51,63 @@ class CirculoBomba:
     
     # Iniciar jogo
     def jogar(self):
-        # Usado para não alterar a lista original e para a legibilidade do código
-        # ? Precisa? Não achei necessário e vantajoso
-        auxLista = self.__listaParticipantes
-        auxPilha = self.__pilhaParticipantesPerdedores
-
         # Variável onde será armazenado o ponteiro atual
         # Avanço que só vai ser usado na primeira rodada para encontrar o elemento que será o start que é gerado aleatoriamente
         start = self.escolherStartAleatorio()
-        ponteiro = auxLista.elemento(start)
+        ponteiro = self.__listaParticipantes.elemento(start)
         avanco = self.__pulosIniciais
 			
-			# Se avançou sem dar uma volta completa
-        if (start + avanco) <= len(self.__listaParticipantes):
-            posicaoBomba = start + avanco
-            # Se deu a volta até o último elemento e partindo dele
-        elif (start + avanco) % len(self.__listaParticipantes) == 0 and start % len(self.__listaParticipantes) == 0:
-            posicaoBomba = start
-            # Se deu a volta em qualquer outro elemento
-        else:
-            posicaoBomba = (start + avanco) % len(self.__listaParticipantes)
+		# passa a posição da bomba para o jogador a ser excluído, transformando em índice depois em posição    
+        posicaoBomba = (start - 1 + avanco) % len(self.__listaParticipantes) + 1
         
         # posicaoBomba = (start + avanco) % len(self.__listaParticipantes) if ((start + avanco) % len(self.__listaParticipantes) > 0) else start
 			
         # Jogando enquanto num vencedores != participantes
         while not self.verificarFimJogo():     
-                print('='*30)
-                print(f'Participantes: {self.__listaParticipantes}')
-                print(f'Rodada {self.__rodada}')
-                # ! Corrigir print para mostrar o posicaoBomba anterior (não o que vai ser eliminado)
-                print(f'Ponteiro: {ponteiro} K: {avanco}')
+            print('='*30)
+            print(f'Participantes: {self.__listaParticipantes}')
+            print(f'Rodada {self.__rodada}')
+            print(f'Ponteiro: {ponteiro} K: {avanco}')
 
-                aux = auxLista.busca(ponteiro)
-                for i in range(aux + 1, aux + avanco + 1):
-                    if i > len(self.__listaParticipantes):
-                        i -= len(self.__listaParticipantes)
-                        print(f'A bomba está passando por {auxLista.elemento(i)}')
-                        time.sleep(0.5)
-                    else:
-                        print(f'A bomba está passando por {auxLista.elemento(i)}')
-                        time.sleep(0.5)
-
-                # Exclui o eliminado e empilha nos perdedores
-                participante_eliminado = auxLista.remove(posicaoBomba)
-                auxPilha.empilha(participante_eliminado)
-
-                if posicaoBomba > len(self.__listaParticipantes):
-                    posicaoBomba = 1
-                    ponteiro = auxLista.elemento(posicaoBomba)
+            # Mostra os participantes que a bomba passou
+            aux = self.__listaParticipantes.busca(ponteiro)
+            for i in range(aux + 1, aux + avanco + 1):
+                if i > len(self.__listaParticipantes):
+                    i -= len(self.__listaParticipantes)
+                    print(f'A bomba está passando por {self.__listaParticipantes.elemento(i)}')
+                    time.sleep(0.5)
                 else:
-                    ponteiro = auxLista.elemento(posicaoBomba)
+                    print(f'A bomba está passando por {self.__listaParticipantes.elemento(i)}')
+                    time.sleep(0.5)
 
-                print('Item removido:', participante_eliminado)
+            # Exclui o eliminado e empilha nos perdedores
+            participante_eliminado = self.__listaParticipantes.remove(posicaoBomba)
+            self.__pilhaParticipantesPerdedores.empilha(participante_eliminado)
+
+            if posicaoBomba > len(self.__listaParticipantes):
+                posicaoBomba = 1
+                ponteiro = self.__listaParticipantes.elemento(posicaoBomba)
+            else:
+                ponteiro = self.__listaParticipantes.elemento(posicaoBomba)
+
+            print('Item removido:', participante_eliminado)
+
+            avanco = self.escolherAvancoAleatorio()
+                
+            # passa a posição da bomba para o jogador a ser excluído, transformando em índice depois em posição   
+            posicaoBomba = (start - 1 + avanco) % len(self.__listaParticipantes) + 1
             
-                avanco = self.escolherAvancoAleatorio()
-					
-                # Se avançou sem dar uma volta completa
-                if (posicaoBomba + avanco) <= len(self.__listaParticipantes):
-                    posicaoBomba = posicaoBomba + avanco
-                # Se deu a volta até o último elemento e partindo dele
-                elif (posicaoBomba + avanco) > len(self.__listaParticipantes) and (posicaoBomba + avanco) % len(self.__listaParticipantes) == 0:
-                    posicaoBomba = posicaoBomba
-                # Se deu a volta em qualquer outro elemento
-                else:
-                    posicaoBomba = (posicaoBomba + avanco) % len(self.__listaParticipantes)
-									
-                # posicaoBomba = (posicaoBomba + avanco) % len(self.__listaParticipantes) if ((posicaoBomba + avanco) % len(self.__listaParticipantes) > 0) else posicaoBomba
-                if posicaoBomba > len(self.__listaParticipantes):
-                    posicaoBomba -= len(self.__listaParticipantes)
-                self.__rodada += 1
+            
+            if posicaoBomba > len(self.__listaParticipantes):
+                posicaoBomba -= len(self.__listaParticipantes)
+            self.__rodada += 1
 
         
         # Caso o jogo tenha encerrado
-        
         #Deixa a ordem correta dos participantes perdedores, mostrando a sequencia de eliminação da direita para a esquerda
         listaPerdedores = []
-        for _ in range(len(auxPilha)):
-            listaPerdedores.append(auxPilha.desempilha())
+        for _ in range(len(self.__pilhaParticipantesPerdedores)):
+            listaPerdedores.append(self.__pilhaParticipantesPerdedores.desempilha())
         
         # Lista os vencedores, adicionando-os numa lista a partir de uma repetição decrescente do número de vencedores
         listaVencedores = [] 
