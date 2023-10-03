@@ -66,7 +66,7 @@ class CirculoBomba:
         if (start + avanco) <= len(self.__listaParticipantes):
             posicaoBomba = start + avanco
             # Se deu a volta até o último elemento e partindo dele
-        elif (start + avanco) > len(self.__listaParticipantes) and (start + avanco) % len(self.__listaParticipantes) == 0:
+        elif (start + avanco) % len(self.__listaParticipantes) == 0 and start % len(self.__listaParticipantes) == 0:
             posicaoBomba = start
             # Se deu a volta em qualquer outro elemento
         else:
@@ -81,6 +81,16 @@ class CirculoBomba:
                 print(f'Rodada {self.__rodada}')
                 # ! Corrigir print para mostrar o posicaoBomba anterior (não o que vai ser eliminado)
                 print(f'Ponteiro: {ponteiro} K: {avanco}')
+
+                aux = auxLista.busca(ponteiro)
+                for i in range(aux + 1, aux + avanco + 1):
+                    if i > len(self.__listaParticipantes):
+                        i -= len(self.__listaParticipantes)
+                        print(f'A bomba está passando por {auxLista.elemento(i)}')
+                        time.sleep(0.5)
+                    else:
+                        print(f'A bomba está passando por {auxLista.elemento(i)}')
+                        time.sleep(0.5)
 
                 # Exclui o eliminado e empilha nos perdedores
                 participante_eliminado = auxLista.remove(posicaoBomba)

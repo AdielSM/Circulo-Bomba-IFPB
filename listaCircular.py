@@ -26,8 +26,6 @@ class No:
 
     def __str__(self):
         return str(self.__carga)
-    
-
 
 class ListaCircular:
     def __init__(self) -> None:
@@ -67,7 +65,7 @@ class ListaCircular:
         except AssertionError as ae:
             raise ListaException(ae)
 
-    def elemento(self, posicao:int) ->  int:
+    def elemento(self, posicao:int) -> any:
         aux = self.__inicio
 
         for _ in range(posicao - 1):
@@ -142,3 +140,4 @@ class ListaCircular:
 
         except AssertionError as ae:
             raise ListaException(ae)
+        
