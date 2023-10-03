@@ -111,12 +111,23 @@ class CirculoBomba:
                     posicaoBomba -= len(self.__listaParticipantes)
                 self.__rodada += 1
 
+        
         # Caso o jogo tenha encerrado
+        
+        #Deixa a ordem correta dos participantes perdedores, mostrando a sequencia de eliminação da direita para a esquerda
+        listaPerdedores = []
+        for _ in range(len(auxPilha)):
+            listaPerdedores.append(auxPilha.desempilha())
+        
+        # Lista os vencedores, adicionando-os numa lista a partir de uma repetição decrescente do número de vencedores
+        listaVencedores = [] 
+        for i in range(self.__numVencedores,0,-1):
+            listaVencedores.append(self.__listaParticipantes.remove(i))
+        
+        #prints finais
         print("O jogo acabou!")
-
-        # ! Temos que ajeitar pro output do documento ainda
-        print(f"Os vencedores são: {self.__listaParticipantes}")
-        print(f"Os perdedores são: {self.__pilhaParticipantesPerdedores}")
+        print(f"O(s) vencedor(es) após {self.__rodada} rodadas, é(são): <<< {', '.join(listaVencedores)} >>>>")
+        print(f"Os perdedores são: {' < '.join(listaPerdedores)}")
 
     def verificarFimJogo(self):
         if self.__numVencedores == len(self.__listaParticipantes):
