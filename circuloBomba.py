@@ -5,29 +5,40 @@ from listaCircular import ListaCircular
 from pilhaParticipantes import Pilha
 
 class CirculoBomba:
-    def __init__(self,participantes:list,numVencedores:int,pulosIniciais:int):
+    def __init__(self,participantes:list,numVencedores:int,pulosIniciais:int)->None:
 
         # Instancia a lista circular de participantes
         self.__listaParticipantes = ListaCircular()
         self.__adicionarParticipante(participantes)
+        
         self.__numVencedores = self.__verificadorNumeroVencedores(numVencedores)
         self.__pulosIniciais = self.__verificadorPulosIniciais(pulosIniciais)
         self.__rodada = 1
         self.__pilhaParticipantesPerdedores = Pilha(len(participantes))
 
     @property
-    def listaParticipantes(self):
+    def listaParticipantes(self)->'ListaCircular':
         return self.__listaParticipantes
     
     @property
-    def numVencedores(self):
+    def numVencedores(self)->int:
         return self.__numVencedores
     
     @property
-    def pulosIniciais(self):
+    def pulosIniciais(self)->int:
         return self.__pulosIniciais
 
-    def __adicionarParticipante(self,arrayParticipantes):
+    @property
+    def pilhaParticipantesPerdedores(self)->'Pilha':
+        return self.__pilhaParticipantesPerdedores
+
+    @property
+    def rodada(self)->int:
+        return self.__rodada
+    
+    
+    
+    def __adicionarParticipante(self,arrayParticipantes:list)->None:
         listaAux = []
         for participante in arrayParticipantes:
             if participante.title() in listaAux:
@@ -36,13 +47,13 @@ class CirculoBomba:
                 self.__listaParticipantes.append(participante.title())
                 listaAux.append(participante.title())
 
-    def __verificadorNumeroVencedores(self, valor):
+    def __verificadorNumeroVencedores(self, valor:any)->int:
         if valor > 0 and valor <= len(self.__listaParticipantes) - 1:
             return valor
         else:
             raise ValueError("O numero de vencedores deve ser maior que 0 e menor que o número de participantes!")
     
-    def __verificadorPulosIniciais(self,valor):
+    def __verificadorPulosIniciais(self,valor:int)->int:
         if valor >= 4 and valor <= 15:
             return valor
         else:
@@ -50,13 +61,13 @@ class CirculoBomba:
 
 
     # Só na primeira rodada
-    def __escolherStartAleatorio(self):
+    def __escolherStartAleatorio(self)->int:
         return rd.randint(1,len(self.listaParticipantes))
     
-    def __escolherAvancoAleatorio(self):
+    def __escolherAvancoAleatorio(self)->int:
         return rd.randint(4,15)
 
-    def __mostrarPercurso(self, start:int, stop:int):
+    def __mostrarPercurso(self, start:int, stop:int)->None:
         for i in range(start, stop):
             if i > len(self.__listaParticipantes):
                 i = (i - 1) % len(self.__listaParticipantes) + 1
@@ -65,7 +76,7 @@ class CirculoBomba:
             time.sleep(0.5)
     
     # Iniciar jogo
-    def jogar(self):
+    def jogar(self)->None:
         # Escolhe o primeiro ponteiro aleatoriamente
         posicaoBomba = indicePonteiro = self.__escolherStartAleatorio()
         # Guarda o nome do primeiro ponteiro
@@ -76,7 +87,7 @@ class CirculoBomba:
         posicaoBomba = (indicePonteiro - 1 + avanco) % len(self.__listaParticipantes) + 1
 
         # Jogando enquanto num vencedores != participantes
-        while not self.verificarFimJogo():     
+        while not self.__verificarFimJogo():     
             print('='*30)
             print(f'Participantes: {self.__listaParticipantes}')
             print(f'Rodada {self.__rodada}')
@@ -93,8 +104,6 @@ class CirculoBomba:
 
             if posicaoBomba == len(self.__listaParticipantes) + 1:
                 posicaoBomba = 1
-            else:
-                posicaoBomba = posicaoBomba
 
             # Atualiza o ponteiro
             ponteiro = self.__listaParticipantes.elemento(posicaoBomba)
@@ -103,8 +112,6 @@ class CirculoBomba:
             avanco = self.__escolherAvancoAleatorio()
             # passa a posição da bomba para o jogador a ser excluído, transformando em índice depois em posição   
             posicaoBomba = ( indicePonteiro - 1 + avanco) % len(self.__listaParticipantes) + 1
-            
-
 
             self.__rodada += 1
 
@@ -125,20 +132,8 @@ class CirculoBomba:
         print(f"O(s) vencedor(es) após {self.__rodada} rodadas, é(são): \033[1;32;40m<<< {', '.join(listaVencedores)} >>>>\033[0m") # cor verde para o(s) vencedor(es)
         print(f"Os perdedores são: {' < '.join(listaPerdedores)}")
 
-    def verificarFimJogo(self):
+    def __verificarFimJogo(self)->bool:
         if self.__numVencedores == len(self.__listaParticipantes):
             return True
         else:
             return False
-        
-
-#salvar
-
-'''
-Lista
-Pilha
-NumVencedores
-Rodada
-Ponteiro
-
-'''

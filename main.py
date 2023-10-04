@@ -1,7 +1,7 @@
 from circuloBomba import CirculoBomba
 
 
-def main():
+def main()->None:
     print('Bem vindo ao Circulo da Bomba!')
     print('='*30)
     try:
@@ -37,7 +37,7 @@ def main():
         main()
 
 
-def jogarNovamente():
+def jogarNovamente()->bool:
     repetir_jogo = input('Deseja jogar novamente?\n (S) - Sim\n (N) - Não\n').upper()
     match repetir_jogo:
         case 'S':

@@ -4,7 +4,7 @@ class ListaException(Exception):
 
 
 class No:
-    def __init__(self, carga):
+    def __init__(self, carga:any)->None:
         self.__carga = carga
         self.__proximo = None
 
@@ -17,14 +17,14 @@ class No:
         return self.__proximo
 
     @carga.setter
-    def carga(self, carga: any):
+    def carga(self, carga: any)->None:
         self.__carga = carga
 
     @proximo.setter
-    def proximo(self, proximo):
+    def proximo(self, proximo: 'No')->None:
         self.__proximo = proximo
-
-    def __str__(self):
+    
+    def __str__(self)->str:
         return str(self.__carga)
 
 class ListaCircular:
@@ -36,7 +36,7 @@ class ListaCircular:
     def __len__(self) -> int:
         return self.__tamanho
 
-    def __str__(self):
+    def __str__(self)->str:
         if not self.__inicio:
             return '[  ]'
 
@@ -78,7 +78,7 @@ class ListaCircular:
         return aux.carga
 
     #adiciona um elemento em alguma posição da lista
-    def insert(self, carga:any, posicao:int):
+    def insert(self, carga:any, posicao:int)->None:
         try:
             assert posicao > 0 and posicao <= len(self), "Posição inválida"
             novo_no = No(carga)
@@ -97,7 +97,7 @@ class ListaCircular:
             raise ListaException(ae)
 
     # Adiciona um novo elemento ao final da lista
-    def append(self, carga): 
+    def append(self, carga:any)->None: 
         novo_no = No(carga)
         if not self.__inicio:
             self.__inicio = novo_no
@@ -144,4 +144,3 @@ class ListaCircular:
 
         except AssertionError as ae:
             raise ListaException(ae)
-        
