@@ -8,13 +8,25 @@ def main() -> None:
     try:
         # Para "n" partidas que o jogador quiser repetir (caso ele não repita, apenas 1 partida acontecerá)
         while True:
-            print('Digite os participantes (separados por vírgula e espaço):')
-            participantes = input()
-            listaDeParticipantesUsuario = participantes.split(', ')
-            # Caso tenha sido informado apenas um participante (ou usado o separador incorreto)
-            if len(listaDeParticipantesUsuario) == 1:
-                raise Exception(
-                    'Você digitou incorretamente a lista de participantes, lembre de usar vírgula e espaço!')
+            opcao = input('Deseja carregar por meio de um arquivo? (S/N)\n').upper()
+
+            # Verifica se o jogador deseja carregar os participantes de um arquivo
+            if opcao == 'S':
+                listaDeParticipantesUsuario = carregar().split(',')
+            
+            # Verifica se o jogador deseja digitar os participantes
+            elif opcao == 'N':
+                print('Digite os participantes (separados por vírgula e espaço):')
+                participantes = input()
+                listaDeParticipantesUsuario = participantes.split(', ')
+                # Caso tenha sido informado apenas um participante (ou usado o separador incorreto)
+                if len(listaDeParticipantesUsuario) == 1:
+                    raise Exception(
+                        'Você digitou incorretamente a lista de participantes, lembre de usar vírgula e espaço!')
+            
+            # Caso o jogador não tenha digitado uma opção válida
+            else:
+                raise Exception('Você não digitou uma opção válida, tente novamente!')
 
             print('Digite o numero de vencedores:')
             numVencedores = int(input())
@@ -24,7 +36,7 @@ def main() -> None:
 
             print('='*30)
 
-            # instancia o jogo em uma variável e o iniciai
+            # instancia o jogo em uma variável e o inicia
             jogo = CirculoBomba(listaDeParticipantesUsuario,
                                 numVencedores, pulosIniciais)
             jogo.jogar()
@@ -44,7 +56,6 @@ def main() -> None:
         main()
 
 
-
 # Verifica se o jogador deseja repetir o jogo
 def jogarNovamente() -> bool:
     repetir_jogo = input(
@@ -58,6 +69,10 @@ def jogarNovamente() -> bool:
             raise Exception(
                 'Você não digitou uma opção válida, tente novamente!')
 
+# Carrega os participantes de um arquivo de texto
+def carregar() -> str:
+    with open('carregamento.txt', 'r') as f:
+        return f.read()
 
 # começa o jogo
 main()

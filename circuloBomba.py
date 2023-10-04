@@ -7,7 +7,6 @@ from pilhaParticipantes import Pilha
 
 class CirculoBomba:
     def __init__(self, participantes: list, numVencedores: int, pulosIniciais: int) -> None:
-
         # Instancia a lista circular de participantes e adiciona os participantes
         self.__listaParticipantes = ListaCircular()
         self.__adicionarParticipante(participantes)
@@ -15,10 +14,9 @@ class CirculoBomba:
         # Instancia a pilha de participantes perdedores com o tamanho máximo como a quantidade de jogadores
         self.__pilhaParticipantesPerdedores = Pilha(len(participantes))
         
-        self.__numVencedores = self.__verificarNumeroVencedores(numVencedores)
+        self.__quantidadeDeVencedores = self.__verificarQuantidadeDeVencedores(numVencedores)
         self.__pulosIniciais = self.__verificarPulosIniciais(pulosIniciais)
-        self.__rodada = 1
-
+        self.__numeroRodadaAtual = 1
 
     @property
     def listaParticipantes(self) -> 'ListaCircular':
@@ -26,7 +24,7 @@ class CirculoBomba:
 
     @property
     def numVencedores(self) -> int:
-        return self.__numVencedores
+        return self.__quantidadeDeVencedores
 
     @property
     def pulosIniciais(self) -> int:
@@ -38,7 +36,7 @@ class CirculoBomba:
 
     @property
     def rodada(self) -> int:
-        return self.__rodada
+        return self.__numeroRodadaAtual
 
     # Adiciona cada participante à lista circular, verificando se há repetição de nomes
     def __adicionarParticipante(self, arrayParticipantes: list) -> None:
@@ -50,7 +48,7 @@ class CirculoBomba:
                 self.__listaParticipantes.append(participante.title())
                 listaAux.append(participante.title())
 
-    def __verificarNumeroVencedores(self, valor: any) -> int:
+    def __verificarQuantidadeDeVencedores(self, valor: any) -> int:
         if valor > 0 and valor <= len(self.__listaParticipantes) - 1:
             return valor
         else:
@@ -65,14 +63,14 @@ class CirculoBomba:
                 "O numero de pulos iniciais deve ser maior que 3 e menor que 16!")
 
     # Só na primeira rodada
-
-    def __escolherStartAleatorio(self) -> int:
+    def __escolherPrimeiroJogador(self) -> int:
         return rd.randint(1, len(self.listaParticipantes))
 
     def __escolherAvancoAleatorio(self) -> int:
         return rd.randint(4, 15)
 
-    def __mostrarPercurso(self, start: int, stop: int) -> None:
+    # Mostra o percurso da bomba do ponteiro ao avanço, passando por cada jogador
+    def __mostrarPercursoDaBomba(self, start: int, stop: int) -> None:
         for i in range(start, stop):
             if i > len(self.__listaParticipantes):
                 i = (i - 1) % len(self.__listaParticipantes) + 1
@@ -84,7 +82,7 @@ class CirculoBomba:
     # Iniciar jogo
     def jogar(self) -> None:
         # Escolhe o primeiro ponteiro aleatoriamente
-        posicaoBomba = indicePonteiro = self.__escolherStartAleatorio()
+        posicaoBomba = indicePonteiro = self.__escolherPrimeiroJogador()
         # Guarda o nome do primeiro ponteiro
         ponteiro = self.__listaParticipantes.elemento(posicaoBomba)
 
@@ -97,11 +95,11 @@ class CirculoBomba:
         while not self.__verificarFimJogo():
             print('='*30)
             print(f'Participantes: {self.__listaParticipantes}')
-            print(f'Rodada {self.__rodada}')
+            print(f'Rodada {self.__numeroRodadaAtual}')
             print(f'Ponteiro: {ponteiro} K: {avanco}')
 
             # Mostra os participantes que a bomba passou
-            self.__mostrarPercurso(
+            self.__mostrarPercursoDaBomba(
                 indicePonteiro + 1, (indicePonteiro + avanco + 1))
 
             # Exclui o eliminado e empilha nos perdedores
@@ -124,7 +122,7 @@ class CirculoBomba:
             posicaoBomba = (indicePonteiro - 1 +
                             avanco) % len(self.__listaParticipantes) + 1
 
-            self.__rodada += 1
+            self.__numeroRodadaAtual += 1
 
         # Caso o jogo tenha encerrado
         # Deixa a ordem correta dos participantes perdedores, mostrando a sequencia de eliminação da direita para a esquerda
@@ -132,22 +130,24 @@ class CirculoBomba:
         for _ in range(len(self.__pilhaParticipantesPerdedores)):
             listaPerdedores.append(
                 self.__pilhaParticipantesPerdedores.desempilha())
+        # ' < '.join([self.__pilhaParticipantesPerdedores.desempilha() for _ in range(len(self.__pilhaParticipantesPerdedores))])
 
         # Lista os vencedores, adicionando-os numa lista a partir de uma repetição decrescente do número de vencedores
         listaVencedores = []
-        for i in range(self.__numVencedores, 0, -1):
+        for i in range(self.__quantidadeDeVencedores, 0, -1):
             listaVencedores.append(self.__listaParticipantes.remove(i))
+        # ', '.join([self.__listaParticipantes.remove(i) for i in range(self.__quantidadeDeVencedores, 0, -1)])
 
         # prints finais
         print("O jogo acabou!")
         # cor verde para o(s) vencedor(es)
         print(
-            f"O(s) vencedor(es) após {self.__rodada} rodadas, é(são): \033[1;32;40m<<< {', '.join(listaVencedores)} >>>>\033[0m")
+            f"O(s) vencedor(es) após {self.__numeroRodadaAtual} rodadas, é(são): \033[1;32;40m<<< {', '.join(listaVencedores)} >>>>\033[0m")
         print(f"Os perdedores são: {' < '.join(listaPerdedores)}")
 
     # Verifica se o jogo acabou
     def __verificarFimJogo(self) -> bool:
-        if self.__numVencedores == len(self.__listaParticipantes):
+        if self.__quantidadeDeVencedores == len(self.__listaParticipantes):
             return True
         else:
             return False
