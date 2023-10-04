@@ -66,6 +66,10 @@ class ListaCircular:
             raise ListaException(ae)
 
     def elemento(self, posicao:int) -> any:
+        assert not self.estaVazia(), "Lista vazia"
+        assert posicao > 0 and posicao <= len(self), "Posição inválida"
+    
+
         aux = self.__inicio
 
         for _ in range(posicao - 1):

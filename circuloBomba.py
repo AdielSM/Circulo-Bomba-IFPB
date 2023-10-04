@@ -59,8 +59,8 @@ class CirculoBomba:
     def __mostrarPercurso(self, start:int, stop:int):
         for i in range(start, stop):
             if i > len(self.__listaParticipantes):
-                i -= len(self.__listaParticipantes)
-
+                i = (i - 1) % len(self.__listaParticipantes) + 1
+            
             print(f'A bomba está passando por {self.__listaParticipantes.elemento(i)}')
             time.sleep(0.5)
     
@@ -74,7 +74,7 @@ class CirculoBomba:
 		# passa a posição da bomba para o jogador a ser excluído, transformando em índice depois em posição    
         avanco = self.__pulosIniciais
         posicaoBomba = (indicePonteiro - 1 + avanco) % len(self.__listaParticipantes) + 1
-        			
+
         # Jogando enquanto num vencedores != participantes
         while not self.verificarFimJogo():     
             print('='*30)
@@ -91,6 +91,11 @@ class CirculoBomba:
             print('A bomba explodiu! BOOM!💣💥💣💥💣')
             print('Item removido:', participante_eliminado)
 
+            if posicaoBomba == len(self.__listaParticipantes) + 1:
+                posicaoBomba = 1
+            else:
+                posicaoBomba = posicaoBomba
+
             # Atualiza o ponteiro
             ponteiro = self.__listaParticipantes.elemento(posicaoBomba)
             indicePonteiro = posicaoBomba
@@ -99,6 +104,8 @@ class CirculoBomba:
             # passa a posição da bomba para o jogador a ser excluído, transformando em índice depois em posição   
             posicaoBomba = ( indicePonteiro - 1 + avanco) % len(self.__listaParticipantes) + 1
             
+
+
             self.__rodada += 1
 
 
