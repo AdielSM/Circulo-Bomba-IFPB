@@ -13,7 +13,7 @@ class CirculoBomba:
         self.__numVencedores = self.__verificadorNumeroVencedores(numVencedores)
         self.__pulosIniciais = self.__verificadorPulosIniciais(pulosIniciais)
         self.__rodada = 1
-        self.__pilhaParticipantesPerdedores = Pilha()
+        self.__pilhaParticipantesPerdedores = Pilha(len(participantes))
 
     @property
     def listaParticipantes(self):
