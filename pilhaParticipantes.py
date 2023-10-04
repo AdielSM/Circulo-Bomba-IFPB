@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class PilhaException(Exception):
     def __init__(self, mensagem):
         super().__init__(mensagem)
@@ -16,7 +17,7 @@ class Pilha:
         *definir a lista de atributos*
     """
 
-    def __init__(self, size: int = 10)->None:
+    def __init__(self, size: int = 10) -> None:
         """ Construtor padrão da classe Pilha sem argumentos. Ao instanciar
             um objeto do tipo Pilha, esta iniciará vazia.
         """
@@ -130,7 +131,7 @@ class Pilha:
             raise PilhaException('Pilha vazia')
         return self.__array[self.__topo]
 
-    def empilha(self, carga: any)->None:
+    def empilha(self, carga: any) -> None:
         """ Método que adiciona um novo elemento ao topo da pilha
 
         Args:
@@ -152,7 +153,7 @@ class Pilha:
             sua carga correspondente.
 
         Returns:
-           any: a carga armazenada no elemento removido
+            any: a carga armazenada no elemento removido
 
         Raises:
             PilhaException: Exceção lançada quando se tenta remover algo de uma pilha vazia
