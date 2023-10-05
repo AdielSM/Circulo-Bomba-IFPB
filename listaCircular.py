@@ -72,6 +72,21 @@ class ListaCircular:
         
         except AssertionError as ae:
             raise ListaException(ae)
+        
+    def elementoEstaNaLista(self, carga: any) -> bool:
+        try:
+            assert not self.estaVazia(), "Lista vazia"
+            aux = self.__inicio
+            posicao = 1
+            while aux.carga != carga:
+                aux = aux.proximo
+                posicao += 1
+                if aux == self.__inicio:
+                    return False    
+            return True
+        
+        except AssertionError as ae:
+            raise ListaException(ae)
 
     # Recebe a posição de um elemento e retorna sua carga
     def elemento(self, posicao: int) -> any:

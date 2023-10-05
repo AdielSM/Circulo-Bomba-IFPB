@@ -1,5 +1,6 @@
 import random as rd
 import time
+
 from listaCircular import ListaCircular
 from pilhaParticipantes import Pilha
 
@@ -37,15 +38,13 @@ class CirculoBomba:
     def rodada(self) -> int:
         return self.__numeroRodadaAtual
 
-    # Adiciona cada participante à lista circular, verificando se há repetição de nomes
+    # Adiciona cada participante à lista circular, verificando antes se há repetição de nomes
     def __adicionarParticipante(self, arrayParticipantes: list) -> None:
-        listaAux = []
         for participante in arrayParticipantes:
-            if participante.title() in listaAux:
+            if (not self.__listaParticipantes.estaVazia()) and (self.__listaParticipantes.elementoEstaNaLista(participante.title())):
                 raise Exception("Há participantes repetidos na lista!")
             else:
                 self.__listaParticipantes.append(participante.title())
-                listaAux.append(participante.title())
 
     def __verificarQuantidadeDeVencedores(self, valor: any) -> int:
         if valor > 0 and valor <= len(self.__listaParticipantes) - 1:
