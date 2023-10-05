@@ -1,6 +1,5 @@
 from circuloBomba import CirculoBomba
 
-
 def main() -> None:
     # Cabeçalho de início do jogo
     print('Bem vindo ao Circulo da Bomba!')
@@ -74,12 +73,11 @@ def jogarNovamente() -> bool:
                 'Você não digitou uma opção válida, tente novamente!')
 
 
-
 # Carrega os participantes de um arquivo de texto
 def carregar() -> str:
     with open('carregamento.txt', 'r') as f:
         return f.read()
 
 
-# começa o jogo
+# Programa Principal
 main()

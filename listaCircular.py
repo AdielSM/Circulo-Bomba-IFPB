@@ -61,11 +61,15 @@ class ListaCircular:
         try:
             assert not self.estaVazia(), "Lista vazia"
             aux = self.__inicio
-            indice = 1
+            posicao = 1
             while aux.carga != carga:
                 aux = aux.proximo
-                indice += 1
-            return indice
+                posicao += 1
+                if aux == self.__inicio:
+                    raise ListaException("Elemento não encontrado na lista")
+            
+            return posicao
+        
         except AssertionError as ae:
             raise ListaException(ae)
 
@@ -103,11 +107,20 @@ class ListaCircular:
     # Adiciona um novo elemento ao final da lista
     def append(self, carga: any) -> None:
         novo_no = No(carga)
+        
+        # Se a lista estiver vazia
         if not self.__inicio:
             self.__inicio = novo_no
             self.__final = novo_no
             self.__inicio.proximo = self.__inicio
+        
+        # Se a lista tiver apenas um elemento
+        elif len(self) == 1:
+            self.__inicio.proximo = novo_no
+            novo_no.proximo = self.__inicio
+            self.__final = novo_no
 
+        # Se a lista tiver mais de um elemento
         else:
             self.__final.proximo = novo_no
             novo_no.proximo = self.__inicio
@@ -121,21 +134,32 @@ class ListaCircular:
             assert posicao > 0 and posicao <= len(self), "Posição inválida"
 
             carga = None
-
+            
+            # Se for o primeiro elemento da lista
             if posicao == 1:
                 carga = self.__inicio.carga
                 # Se for o único elemento da lista
                 if self.__tamanho == 1:
                     self.__inicio = None
+                    self.__final = None
+                # Se não for o único elemento da lista
                 else:
-                    cursor = self.__inicio
-                    # Percorre a lista até o último elemento
-                    while cursor.proximo != self.__inicio:
-                        cursor = cursor.proximo
+                    cursor = self.__final
                     # O último elemento aponta para o segundo elemento
                     cursor.proximo = self.__inicio.proximo
                     self.__inicio = self.__inicio.proximo
 
+            # Se for o último elemento da lista
+            elif posicao == len(self):
+                carga = self.__final.carga
+                cursor = self.__inicio
+                # Percorre a lista até o elemento anterior ao que será removido
+                for _ in range(posicao - 2):
+                    cursor = cursor.proximo
+                cursor.proximo = self.__inicio
+                self.__final = cursor
+
+            # Caso não seja um elemento extremo
             else:
                 cursor = self.__inicio
                 # Percorre a lista até o elemento anterior ao que será removido

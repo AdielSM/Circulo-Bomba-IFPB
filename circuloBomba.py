@@ -78,6 +78,7 @@ class CirculoBomba:
                 f'A bomba está passando por {self.__listaParticipantes.elemento(i)}')
             time.sleep(0.5)
 
+
     # Iniciar jogo
     def jogar(self) -> None:
         # Escolhe o primeiro ponteiro aleatoriamente
@@ -88,6 +89,7 @@ class CirculoBomba:
         # passa a posição da bomba para o jogador a ser excluído, transformando em índice depois em posição
         avanco = self.__pulosIniciais
         posicaoBomba = (indicePonteiro - 1 + avanco) % len(self.__listaParticipantes) + 1
+
 
         # Jogando enquanto num vencedores != participantes
         while not self.__verificarFimJogo():
@@ -105,7 +107,7 @@ class CirculoBomba:
                 posicaoBomba)
             self.__pilhaParticipantesPerdedores.empilha(participante_eliminado)
             print('A bomba explodiu! BOOM!💣💥💣💥💣')
-            print('Item removido:', participante_eliminado)
+            print('Participante removido:', participante_eliminado)
 
             # Caso o jogador removido tenha sido o último, o seu sucessor será o primeiro jogador
             if (posicaoBomba == len(self.__listaParticipantes) + 1): 
@@ -114,6 +116,7 @@ class CirculoBomba:
             # Atualiza o ponteiro
             ponteiro = self.__listaParticipantes.elemento(posicaoBomba)
             indicePonteiro = posicaoBomba
+
 
             # passa a posição da bomba para o jogador a ser excluído, transformando em índice depois em posição
             avanco = self.__escolherAvancoAleatorio()
