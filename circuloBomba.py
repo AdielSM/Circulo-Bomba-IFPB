@@ -1,6 +1,5 @@
 import random as rd
 import time
-
 from listaCircular import ListaCircular
 from pilhaParticipantes import Pilha
 
@@ -88,8 +87,7 @@ class CirculoBomba:
 
         # passa a posição da bomba para o jogador a ser excluído, transformando em índice depois em posição
         avanco = self.__pulosIniciais
-        posicaoBomba = (indicePonteiro - 1 +
-                        avanco) % len(self.__listaParticipantes) + 1
+        posicaoBomba = (indicePonteiro - 1 + avanco) % len(self.__listaParticipantes) + 1
 
         # Jogando enquanto num vencedores != participantes
         while not self.__verificarFimJogo():
@@ -110,7 +108,7 @@ class CirculoBomba:
             print('Item removido:', participante_eliminado)
 
             # Caso o jogador removido tenha sido o último, o seu sucessor será o primeiro jogador
-            if (posicaoBomba == len(self.__listaParticipantes) + 1):
+            if (posicaoBomba == len(self.__listaParticipantes) + 1): 
                 posicaoBomba = 1
 
             # Atualiza o ponteiro
@@ -119,8 +117,7 @@ class CirculoBomba:
 
             # passa a posição da bomba para o jogador a ser excluído, transformando em índice depois em posição
             avanco = self.__escolherAvancoAleatorio()
-            posicaoBomba = (indicePonteiro - 1 +
-                            avanco) % len(self.__listaParticipantes) + 1
+            posicaoBomba = (indicePonteiro - 1 + avanco) % len(self.__listaParticipantes) + 1
 
             self.__numeroRodadaAtual += 1
 
@@ -128,21 +125,18 @@ class CirculoBomba:
         # Deixa a ordem correta dos participantes perdedores, mostrando a sequencia de eliminação da direita para a esquerda
         listaPerdedores = []
         for _ in range(len(self.__pilhaParticipantesPerdedores)):
-            listaPerdedores.append(
-                self.__pilhaParticipantesPerdedores.desempilha())
-        # ' < '.join([self.__pilhaParticipantesPerdedores.desempilha() for _ in range(len(self.__pilhaParticipantesPerdedores))])
+            listaPerdedores.append(self.__pilhaParticipantesPerdedores.desempilha())
 
         # Lista os vencedores, adicionando-os numa lista a partir de uma repetição decrescente do número de vencedores
         listaVencedores = []
         for i in range(self.__quantidadeDeVencedores, 0, -1):
             listaVencedores.append(self.__listaParticipantes.remove(i))
-        # ', '.join([self.__listaParticipantes.remove(i) for i in range(self.__quantidadeDeVencedores, 0, -1)])
-
+        
         # prints finais
         print("O jogo acabou!")
+        
         # cor verde para o(s) vencedor(es)
-        print(
-            f"O(s) vencedor(es) após {self.__numeroRodadaAtual} rodadas, é(são): \033[1;32;40m<<< {', '.join(listaVencedores)} >>>>\033[0m")
+        print(f"O(s) vencedor(es) após {self.__numeroRodadaAtual} rodadas, é(são): \033[1;32;40m<<< {', '.join(listaVencedores)} >>>>\033[0m")
         print(f"Os perdedores são: {' < '.join(listaPerdedores)}")
 
     # Verifica se o jogo acabou
