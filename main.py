@@ -11,7 +11,7 @@ def main() -> None:
         # Para "n" partidas que o jogador quiser repetir (caso ele não repita, apenas 1 partida acontecerá)
         while True:
             print(f'Deseja carregar os participantes por meio de um arquivo? \033[4m(S/N)\033[0m')
-            print(f'\033[2mEm caso afirmativo, os dados deverão estar em "carregamento.txt" e cada nome deve estar separado por vírgula e espaço.\033[0m\n')
+            print(f'\033[2mEm caso afirmativo, os dados deverão estar em "carregamento.txt", cada nome deve estar separado por vírgula e espaço.\033[0m\n')
             opcao = input().upper()
 
             # Verifica se o jogador deseja carregar os participantes de um arquivo

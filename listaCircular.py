@@ -57,7 +57,7 @@ class ListaCircular:
         return self.__inicio == None
 
     # Recebe a carga de um elemento e retorna sua posição
-    def busca(self, carga: any) -> int|None:
+    def busca(self, carga: any) -> int | None:
         try:
             assert not self.estaVazia(), "Lista vazia"
             aux = self.__inicio
@@ -69,7 +69,7 @@ class ListaCircular:
                     return None
 
             return posicao
-        
+
         except AssertionError as ae:
             raise ListaException(ae)
 
@@ -88,7 +88,8 @@ class ListaCircular:
     # adiciona um elemento em alguma posição da lista
     def insert(self, carga: any, posicao: int) -> None:
         try:
-            assert posicao > 0 and posicao <= (len(self) + 1), "Posição inválida"
+            assert posicao > 0 and posicao <= (
+                len(self) + 1), "Posição inválida"
 
             # Se a inserção for na última posição (append)
             if (posicao == (len(self) + 1)):
@@ -114,7 +115,7 @@ class ListaCircular:
     def append(self, carga: any) -> None:
         # self.insert(carga, len(self) + 1)
         novo_no = No(carga)
-        
+
         # Se a lista estiver vazia
         if not self.__inicio:
             self.__inicio = novo_no
@@ -135,7 +136,7 @@ class ListaCircular:
             assert posicao > 0 and posicao <= len(self), "Posição inválida"
 
             carga = None
-            
+
             # Se for o primeiro elemento da lista
             if posicao == 1:
                 carga = self.__inicio.carga

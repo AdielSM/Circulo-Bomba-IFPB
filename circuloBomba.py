@@ -13,8 +13,9 @@ class CirculoBomba:
 
         # Instancia a pilha de participantes perdedores com o tamanho máximo como a quantidade de jogadores
         self.__pilhaParticipantesPerdedores = Pilha(len(participantes))
-        
-        self.__quantidadeDeVencedores = self.__verificarQuantidadeDeVencedores(numVencedores)
+
+        self.__quantidadeDeVencedores = self.__verificarQuantidadeDeVencedores(
+            numVencedores)
         self.__pulosIniciais = self.__verificarPulosIniciais(pulosIniciais)
         self.__numeroRodadaAtual = 1
 
@@ -54,7 +55,7 @@ class CirculoBomba:
                 "O numero de vencedores deve ser maior que 0 e menor que o número de participantes!")
 
     def __verificarPulosIniciais(self, valor: int) -> int:
-        if valor >= 4 and valor <= 15:
+        if valor >= 1 and valor <= 15:
             return valor
         else:
             raise ValueError(
@@ -77,8 +78,8 @@ class CirculoBomba:
                 f'A bomba está passando por {self.__listaParticipantes.elemento(i)}')
             time.sleep(1)
 
-
     # Iniciar jogo
+
     def jogar(self) -> None:
         # Escolhe o primeiro ponteiro aleatoriamente
         posicaoBomba = indicePonteiro = self.__escolherPrimeiroJogador()
@@ -87,8 +88,8 @@ class CirculoBomba:
 
         # passa a posição da bomba para o jogador a ser excluído, transformando em índice depois em posição
         avanco = self.__pulosIniciais
-        posicaoBomba = (indicePonteiro - 1 + avanco) % len(self.__listaParticipantes) + 1
-
+        posicaoBomba = (indicePonteiro - 1 +
+                        avanco) % len(self.__listaParticipantes) + 1
 
         # Jogando enquanto num vencedores != participantes
         while not self.__verificarFimJogo():
@@ -109,17 +110,17 @@ class CirculoBomba:
             print('Participante removido:', participante_eliminado)
 
             # Caso o jogador removido tenha sido o último, o seu sucessor será o primeiro jogador
-            if (posicaoBomba == len(self.__listaParticipantes) + 1): 
+            if (posicaoBomba == len(self.__listaParticipantes) + 1):
                 posicaoBomba = 1
 
             # Atualiza o ponteiro
             ponteiro = self.__listaParticipantes.elemento(posicaoBomba)
             indicePonteiro = posicaoBomba
 
-
             # passa a posição da bomba para o jogador a ser excluído, transformando em índice depois em posição
             avanco = self.__escolherAvancoAleatorio()
-            posicaoBomba = (indicePonteiro - 1 + avanco) % len(self.__listaParticipantes) + 1
+            posicaoBomba = (indicePonteiro - 1 +
+                            avanco) % len(self.__listaParticipantes) + 1
 
             self.__numeroRodadaAtual += 1
 
@@ -127,21 +128,22 @@ class CirculoBomba:
         # Deixa a ordem correta dos participantes perdedores, mostrando a sequencia de eliminação da direita para a esquerda
         listaPerdedores = []
         for _ in range(len(self.__pilhaParticipantesPerdedores)):
-            listaPerdedores.append(self.__pilhaParticipantesPerdedores.desempilha())
-        # ' < '.join([self._pilhaParticipantesPerdedores.desempilha() for _ in range(len(self._pilhaParticipantesPerdedores))])
-        # ', '.join(listaVencedores)
+            listaPerdedores.append(
+                self.__pilhaParticipantesPerdedores.desempilha())
+
         # Lista os vencedores, adicionando-os numa lista a partir de uma repetição decrescente do número de vencedores
         listaVencedores = []
         for i in range(self.__quantidadeDeVencedores, 0, -1):
             listaVencedores.append(self.__listaParticipantes.remove(i))
-        # ', '.join([self._listaParticipantes.remove(i) for i in range(self._quantidadeDeVencedores, 0, -1)])
-        # ' < '.join(listaPerdedores)
+
         # prints finais
         print("O jogo acabou!")
-        
+
+        seta = '\033[90m < \033[0m'
         # cor verde para o(s) vencedor(es)
-        print(f"O(s) vencedor(es) após {self.__numeroRodadaAtual} rodadas, é(são): \033[1;32;40m<<< 🏆{', '.join(listaVencedores)}🏆 >>>>\033[0m")
-        print(f"Os perdedores são: {' < '.join(listaPerdedores)}")
+        print(
+            f"O(s) vencedor(es) após {self.__numeroRodadaAtual} rodadas, é(são): \033[1;32;40m <<<< {', '.join(listaVencedores)} >>>>\033[0m")
+        print("A ordem dos perdedores são: " , seta.join(listaPerdedores))
 
     # Verifica se o jogo acabou
     def __verificarFimJogo(self) -> bool:
