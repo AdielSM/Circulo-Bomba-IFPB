@@ -45,7 +45,7 @@ class ListaCircular:
         aux = self.__inicio
         retorno = ''
         while True:
-            retorno += aux.carga
+            retorno += str(aux.carga)
             aux = aux.proximo
             if aux == self.__inicio:
                 return "inicio -> [ " + retorno + "]"
@@ -57,7 +57,7 @@ class ListaCircular:
         return self.__inicio == None
 
     # Recebe a carga de um elemento e retorna sua posição
-    def busca(self, carga: any) -> int:
+    def busca(self, carga: any) -> int|None:
         try:
             assert not self.estaVazia(), "Lista vazia"
             aux = self.__inicio
@@ -66,24 +66,9 @@ class ListaCircular:
                 aux = aux.proximo
                 posicao += 1
                 if aux == self.__inicio:
-                    raise ListaException("Elemento não encontrado na lista")
-            
+                    return None
+
             return posicao
-        
-        except AssertionError as ae:
-            raise ListaException(ae)
-        
-    def elementoEstaNaLista(self, carga: any) -> bool:
-        try:
-            assert not self.estaVazia(), "Lista vazia"
-            aux = self.__inicio
-            posicao = 1
-            while aux.carga != carga:
-                aux = aux.proximo
-                posicao += 1
-                if aux == self.__inicio:
-                    return False    
-            return True
         
         except AssertionError as ae:
             raise ListaException(ae)
@@ -103,7 +88,13 @@ class ListaCircular:
     # adiciona um elemento em alguma posição da lista
     def insert(self, carga: any, posicao: int) -> None:
         try:
-            assert posicao > 0 and posicao <= len(self), "Posição inválida"
+            assert posicao > 0 and posicao <= (len(self) + 1), "Posição inválida"
+
+            # Se a inserção for na última posição (append)
+            if (posicao == (len(self) + 1)):
+                self.append(carga)
+                return
+
             novo_no = No(carga)
             contador = 1
 
@@ -121,6 +112,7 @@ class ListaCircular:
 
     # Adiciona um novo elemento ao final da lista
     def append(self, carga: any) -> None:
+        # self.insert(carga, len(self) + 1)
         novo_no = No(carga)
         
         # Se a lista estiver vazia
@@ -128,12 +120,6 @@ class ListaCircular:
             self.__inicio = novo_no
             self.__final = novo_no
             self.__inicio.proximo = self.__inicio
-        
-        # Se a lista tiver apenas um elemento
-        elif len(self) == 1:
-            self.__inicio.proximo = novo_no
-            novo_no.proximo = self.__inicio
-            self.__final = novo_no
 
         # Se a lista tiver mais de um elemento
         else:
@@ -159,9 +145,8 @@ class ListaCircular:
                     self.__final = None
                 # Se não for o único elemento da lista
                 else:
-                    cursor = self.__final
                     # O último elemento aponta para o segundo elemento
-                    cursor.proximo = self.__inicio.proximo
+                    self.__final.proximo = self.__inicio.proximo
                     self.__inicio = self.__inicio.proximo
 
             # Se for o último elemento da lista

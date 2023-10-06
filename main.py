@@ -1,15 +1,17 @@
 from circuloBomba import CirculoBomba
+import time
 
 def main() -> None:
     # Cabeçalho de início do jogo
-    print('Bem vindo ao Circulo da Bomba!')
-    print('='*30)
+    print('')
+    print(f'💣💥 \033[1mBem vindo ao Círculo da Bomba!\033[0m 💣💥')
+    print('='*45)
 
     try:
         # Para "n" partidas que o jogador quiser repetir (caso ele não repita, apenas 1 partida acontecerá)
         while True:
-            print('Deseja carregar os participantes por meio de um arquivo? (S/N)')
-            print('Em caso afirmativo, os dados deverão estar em "carregamento.txt" e cada nome deve estar separado por vírgula e espaço.\n')
+            print(f'Deseja carregar os participantes por meio de um arquivo? \033[4m(S/N)\033[0m')
+            print(f'\033[2mEm caso afirmativo, os dados deverão estar em "carregamento.txt" e cada nome deve estar separado por vírgula e espaço.\033[0m\n')
             opcao = input().upper()
 
             # Verifica se o jogador deseja carregar os participantes de um arquivo
@@ -36,7 +38,7 @@ def main() -> None:
             print('Digite o numero de pulos iniciais:')
             pulosIniciais = int(input())
 
-            print('='*30)
+            print('='*45)
 
             # instancia o jogo em uma variável e o inicia
             jogo = CirculoBomba(listaDeParticipantesUsuario,
@@ -49,13 +51,15 @@ def main() -> None:
                 break
 
     except KeyboardInterrupt:
-        print('Ok, encerrando o jogo...')
+        print('Ok, encerrando o jogo... ✔')
     except ValueError:
-        print('Você não digitou um número válido como solicitado, tente novamente!\n')
+        print(f'\033[91m ⚠ Você não digitou um número válido como solicitado, tente novamente!\n\033[0m')
+        time.sleep(1)
         main()
     except Exception as e:
-        print(e)
+        print(f'\033[91m ⚠ {e}\033[0m')
         print('')
+        time.sleep(1)
         main()
 
 

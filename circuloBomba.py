@@ -41,7 +41,7 @@ class CirculoBomba:
     # Adiciona cada participante à lista circular, verificando antes se há repetição de nomes
     def __adicionarParticipante(self, arrayParticipantes: list) -> None:
         for participante in arrayParticipantes:
-            if (not self.__listaParticipantes.estaVazia()) and (self.__listaParticipantes.elementoEstaNaLista(participante.title())):
+            if (not self.__listaParticipantes.estaVazia()) and (self.__listaParticipantes.busca(participante.title())):
                 raise Exception("Há participantes repetidos na lista!")
             else:
                 self.__listaParticipantes.append(participante.title())
@@ -75,7 +75,7 @@ class CirculoBomba:
 
             print(
                 f'A bomba está passando por {self.__listaParticipantes.elemento(i)}')
-            time.sleep(0.5)
+            time.sleep(1)
 
 
     # Iniciar jogo
@@ -128,17 +128,19 @@ class CirculoBomba:
         listaPerdedores = []
         for _ in range(len(self.__pilhaParticipantesPerdedores)):
             listaPerdedores.append(self.__pilhaParticipantesPerdedores.desempilha())
-
+        # ' < '.join([self._pilhaParticipantesPerdedores.desempilha() for _ in range(len(self._pilhaParticipantesPerdedores))])
+        # ', '.join(listaVencedores)
         # Lista os vencedores, adicionando-os numa lista a partir de uma repetição decrescente do número de vencedores
         listaVencedores = []
         for i in range(self.__quantidadeDeVencedores, 0, -1):
             listaVencedores.append(self.__listaParticipantes.remove(i))
-        
+        # ', '.join([self._listaParticipantes.remove(i) for i in range(self._quantidadeDeVencedores, 0, -1)])
+        # ' < '.join(listaPerdedores)
         # prints finais
         print("O jogo acabou!")
         
         # cor verde para o(s) vencedor(es)
-        print(f"O(s) vencedor(es) após {self.__numeroRodadaAtual} rodadas, é(são): \033[1;32;40m<<< {', '.join(listaVencedores)} >>>>\033[0m")
+        print(f"O(s) vencedor(es) após {self.__numeroRodadaAtual} rodadas, é(são): \033[1;32;40m<<< 🏆{', '.join(listaVencedores)}🏆 >>>>\033[0m")
         print(f"Os perdedores são: {' < '.join(listaPerdedores)}")
 
     # Verifica se o jogo acabou
